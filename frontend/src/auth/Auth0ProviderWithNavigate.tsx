@@ -1,23 +1,25 @@
-import { useCreateMyUser } from "@/api/MyUserApi";
-import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
+import { Auth0Provider } from "@auth0/auth0-react";
 import { PropsWithChildren } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Auth0ProviderWithNavigate = ({ children }: PropsWithChildren) => {
-  const { createUser } = useCreateMyUser();
+  const navigate = useNavigate();
 
+  // Auth0 configuration from environment variables
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
 
-  const onRedirectCallback = (appState?: AppState, user?: User) => {
-    if (user?.sub && user?.email) {
-      createUser({ auth0Id: user.sub, email: user.email });
-    }
+  // Handle redirection after login
+  const onRedirectCallback = () => {
+    navigate("/auth-callback"); // Redirect to the authentication callback page
   };
 
+  // Ensure necessary environment variables are set
   if (!domain || !clientId || !redirectUri) {
     throw new Error("unable to initialise auth");
   }
+
   return (
     <Auth0Provider
       domain={domain}
@@ -27,7 +29,7 @@ const Auth0ProviderWithNavigate = ({ children }: PropsWithChildren) => {
       }}
       onRedirectCallback={onRedirectCallback}
     >
-      {children}
+      {children} {/* Render the child components */}
     </Auth0Provider>
   );
 };
