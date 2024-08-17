@@ -15,14 +15,37 @@ const createCurrentUser = async (req: Request, res: Response) => {
     const newUser = new User(req.body);
     await newUser.save();
 
-    // 3. Return the user object to the calling client
-    res.status(201).json(newUser.toObject()); // User created, return 201 Created with user data
+    // 3. Return the created user object
+    res.status(201).json(newUser.toObject()); // User created, return 201 Created
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error creating user" }); // Handle errors
   }
 };
 
+const updateCurrentUser = async (req: Request, res: Response) => {
+  try {
+    const { name, addressLine1, country, city } = req.body;
+    const user = await User.findById(req.userId); // Find user by ID
+    if (!user) {
+      return res.status(404).json({ message: "User not found" }); // User not found
+    }
+
+    // Update user details
+    user.name = name;
+    user.addressLine1 = addressLine1;
+    user.city = city;
+    user.country = country;
+
+    await user.save(); // Save updated user
+    res.status(200).json(user.toObject()); // Return updated user data
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error updating user" }); // Handle errors
+  }
+};
+
 export default {
   createCurrentUser,
+  updateCurrentUser,
 };
