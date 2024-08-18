@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./layouts/layout";
 import AuthCallbackPage from "./pages/AuthCallbackPage";
 import HomePage from "./pages/HomePage";
@@ -15,15 +16,20 @@ const AppRoutes = () => {
           </Layout>
         }
       />
+
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
-      <Route
-        path="/user-profile"
-        element={
-          <Layout showHero={false}>
-            <UserProfilePage />
-          </Layout>
-        }
-      />
+
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/user-profile"
+          element={
+            <Layout showHero={false}>
+              <UserProfilePage />
+            </Layout>
+          }
+        />
+      </Route>
+
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
