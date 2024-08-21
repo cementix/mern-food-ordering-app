@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
+import myRestaurantRoute from "./routes/MyRestaurantRoute";
 import myUserRoute from "./routes/MyUserRoute";
 
 // Define port constant to start the server
@@ -33,6 +34,7 @@ app.get("/health", async (req: Request, res: Response) => {
 });
 
 app.use("/api/my/user", myUserRoute);
+app.use("/api/my/restaurant", myRestaurantRoute);
 
 // Routes
 app.get("/test", async (req: Request, res: Response) => {
