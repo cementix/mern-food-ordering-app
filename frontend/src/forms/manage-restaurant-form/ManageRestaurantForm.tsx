@@ -1,8 +1,10 @@
 import { LoadingButton } from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Restaurant } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@radix-ui/react-dropdown-menu";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CuisinesSection from "./CuisinesSection";
@@ -45,9 +47,11 @@ type RestaurantFormData = z.infer<typeof formSchema>;
 const ManageRestaurantForm = ({
   onSave,
   isLoading,
+  restaurant,
 }: {
   onSave: (RestaurantFormData: FormData) => void;
   isLoading: boolean;
+  restaurant?: Restaurant;
 }) => {
   const form = useForm<RestaurantFormData>({
     resolver: zodResolver(formSchema),
@@ -56,6 +60,29 @@ const ManageRestaurantForm = ({
       menuItems: [{ name: "", price: 0 }],
     },
   });
+
+  useEffect(() => {
+    if (!restaurant) {
+      return;
+    }
+
+    const deliveryPriceFormatted = parseInt(
+      (restaurant.deliveryPrice / 100).toFixed(2)
+    );
+
+    const menuItemsFormatted = restaurant.menuItems.map((item) => ({
+      ...item,
+      price: parseInt((item.price / 100).toFixed(2)),
+    }));
+
+    const formattedRestaurant = {
+      ...restaurant,
+      deliveryPrice: deliveryPriceFormatted,
+      menuItems: menuItemsFormatted,
+    };
+
+    form.reset(formattedRestaurant);
+  }, [form, restaurant]);
 
   const onSubmit = (formDataJson: RestaurantFormData) => {
     const formData = new FormData();
