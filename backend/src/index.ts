@@ -5,6 +5,7 @@ import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
 import myUserRoute from "./routes/MyUserRoute";
+import restaurantRoute from "./routes/RestaurantRoute";
 
 // Define port constant to start the server
 const PORT = 7000;
@@ -35,6 +36,7 @@ app.get("/health", async (req: Request, res: Response) => {
 
 app.use("/api/my/user", myUserRoute);
 app.use("/api/my/restaurant", myRestaurantRoute);
+app.use("/api/restaurant", restaurantRoute);
 
 // Routes
 app.get("/test", async (req: Request, res: Response) => {
