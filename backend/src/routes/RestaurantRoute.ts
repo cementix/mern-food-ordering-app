@@ -11,7 +11,7 @@ router.get(
     .trim()
     .notEmpty()
     .withMessage("City parameter must be a valid string"),
-  RestaurantController.searchRestaurants
+  RestaurantController.searchRestaurant
 );
 
 export default router;
