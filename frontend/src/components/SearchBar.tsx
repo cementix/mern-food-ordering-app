@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
@@ -18,17 +19,23 @@ const SearchBar = ({
   onSubmit,
   placeholder,
   onReset,
+  searchQuery,
 }: {
   onSubmit: (formData: SearchForm) => void;
   placeholder: string;
   onReset?: () => void;
+  searchQuery: string;
 }) => {
   const form = useForm<SearchForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      searchQuery: "",
+      searchQuery,
     },
   });
+
+  useEffect(() => {
+    form.reset({ searchQuery });
+  }, [form, searchQuery]);
 
   const handleReset = () => {
     form.reset({
@@ -42,7 +49,7 @@ const SearchBar = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={`flex items-center flex-1 gap-3 justify-between flex-row border-2 rounded-full p-3 mx-5 ${
+        className={`flex items-center flex-1 gap-3 justify-between flex-row border-2 rounded-full p-3 mb-5 ${
           form.formState.errors.searchQuery && "border-red-500"
         }`}
       >
@@ -64,16 +71,14 @@ const SearchBar = ({
             </FormControl>
           )}
         />
-        {form.formState.isDirty && (
-          <Button
-            type="button"
-            variant="outline"
-            className="rounded-full"
-            onClick={handleReset}
-          >
-            Clear
-          </Button>
-        )}
+        <Button
+          type="button"
+          variant="outline"
+          className="rounded-full"
+          onClick={handleReset}
+        >
+          Reset
+        </Button>
         <Button type="submit" className="bg-orange-500 rounded-full">
           Search
         </Button>
