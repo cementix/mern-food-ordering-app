@@ -1,4 +1,4 @@
-import { Auth0Provider } from "@auth0/auth0-react";
+import { AppState, Auth0Provider } from "@auth0/auth0-react";
 import { PropsWithChildren } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,8 +12,8 @@ const Auth0ProviderWithNavigate = ({ children }: PropsWithChildren) => {
   const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
   // Handle redirection after login
-  const onRedirectCallback = () => {
-    navigate("/auth-callback"); // Redirect to the authentication callback page
+  const onRedirectCallback = (appState?: AppState) => {
+    navigate(appState?.returnTo || "/auth-callback"); // Redirect to the authentication callback page
   };
 
   // Ensure necessary environment variables are set
