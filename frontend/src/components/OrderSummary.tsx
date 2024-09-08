@@ -1,5 +1,6 @@
 import { CartItem } from "@/pages/DetailPage";
 import { Restaurant } from "@/types";
+import { Trash } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
@@ -7,9 +8,11 @@ import { Separator } from "./ui/separator";
 const OrderSummary = ({
   restaurant,
   cartItems,
+  removeFromCart,
 }: {
   restaurant: Restaurant;
   cartItems: CartItem[];
+  removeFromCart: (cartItem: CartItem) => void;
 }) => {
   const getTotalCost = () => {
     const totalInCents = cartItems.reduce(
@@ -39,6 +42,12 @@ const OrderSummary = ({
               {item.name}
             </span>
             <span className="flex items-center gap-1">
+              <Trash
+                className="cursor-pointer"
+                color="red"
+                size={20}
+                onClick={() => removeFromCart(item)}
+              />
               ${((item.price * item.quantity) / 100).toFixed(2)}
             </span>
           </div>
