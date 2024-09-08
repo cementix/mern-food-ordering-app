@@ -1,9 +1,15 @@
 import { MenuItem as MenuItemType } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
-const MenuItem = ({ menuItem }: { menuItem: MenuItemType }) => {
+const MenuItem = ({
+  menuItem,
+  addToCart,
+}: {
+  menuItem: MenuItemType;
+  addToCart: () => void;
+}) => {
   return (
-    <Card className="cursor-pointer">
+    <Card className="cursor-pointer" onClick={addToCart}>
       <CardHeader>
         <CardTitle>{menuItem.name}</CardTitle>
       </CardHeader>
