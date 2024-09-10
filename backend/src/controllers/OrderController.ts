@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Stripe from "stripe";
 import { MenuItemType, Restaurant } from "../models/restaurant";
 
-const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
+const STRIPE = new Stripe(process.env.STRIPE_SECRET as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
 
 type CheckoutSessionRequest = {
@@ -111,7 +111,7 @@ const createSession = async (
       restaurantId,
     },
     success_url: `${FRONTEND_URL}/order-status?success=true`,
-    cancel_url: `${FRONTEND_URL}/deatail/${restaurantId}?cancelled=true`,
+    cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
   });
 
   return sessionData;

@@ -11,9 +11,11 @@ import { Button } from "./ui/button";
 const CheckoutButton = ({
   onCheckout,
   disabled,
+  isLoading,
 }: {
   onCheckout: (userFormData: UserFormData) => void;
   disabled: boolean;
+  isLoading: boolean;
 }) => {
   const {
     isAuthenticated,
@@ -41,7 +43,7 @@ const CheckoutButton = ({
     );
   }
 
-  if (isAuthLoading || !currentUser) {
+  if (isAuthLoading || !currentUser || isLoading) {
     return <LoadingButton />;
   }
 
