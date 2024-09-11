@@ -27,8 +27,9 @@ cloudinary.config({
 const app = express();
 
 // Middlewares
-app.use(express.json());
 app.use(cors());
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+app.use(express.json());
 
 // Health check route
 app.get("/health", async (req: Request, res: Response) => {
