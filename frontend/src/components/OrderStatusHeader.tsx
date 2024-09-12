@@ -1,3 +1,4 @@
+import { ORDER_STATUS } from "@/config/order-status-config";
 import { Order } from "@/types";
 import { Progress } from "./ui/progress";
 
@@ -17,13 +18,22 @@ const OrderStatusHeader = ({ order }: { order: Order }) => {
     return `${hours}:${paddedMinutes}`;
   };
 
+  const getOrderStatusInfo = () => {
+    return (
+      ORDER_STATUS.find((o) => o.value === order.status) || ORDER_STATUS[0]
+    );
+  };
+
   return (
     <>
       <h1 className="flex md:flex-row flex-col md:justify-between gap-5 font-bold text-4xl tracking-tighter">
-        <span>Order Status: {order.status}</span>
+        <span>Order Status: {getOrderStatusInfo().label}</span>
         <span>Expected by: {getExpectedDeliveryTime()}</span>
       </h1>
-      <Progress className="animate-pulse" value={50} />
+      <Progress
+        className="animate-pulse"
+        value={getOrderStatusInfo().progressValue}
+      />
     </>
   );
 };
